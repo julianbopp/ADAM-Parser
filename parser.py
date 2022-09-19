@@ -7,7 +7,6 @@ class Parser:
         with open("userdata.txt") as userdata:
             self.username = userdata.readline().replace('\n', '')
             self.password = userdata.readline().replace('\n', '')
-            print(self.username + self.password)
 
         self.session = self.getSession()
 
@@ -97,7 +96,6 @@ class Parser:
 
         # need to read SAMLResponse number from sixth.text
         text = sixth.text
-        print(sixth.text)
         for item in text.split("\n"):
             # if everything works this should occur once
             if "SAMLResponse" in item:
@@ -131,6 +129,8 @@ class Parser:
         semester = bs.get(self.session.get(semesterURL).text)
 
 
+
 if __name__ == "__main__":
     parser = Parser()
     parser.testSession()
+    parser.getCourses()
