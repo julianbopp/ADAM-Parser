@@ -153,7 +153,6 @@ class Parser:
 
         print(self.courses)
 
-
     def createCourseDirectories(self):
         for item in self.courses:
             path = os.path.join(self.home, item)
@@ -163,3 +162,4 @@ class Parser:
 if __name__ == "__main__":
     parser = Parser()
     parser.loadCourses()
+    parser.createCourseDirectories()
