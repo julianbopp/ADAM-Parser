@@ -2,6 +2,7 @@ import json
 import os
 import requests
 from bs4 import BeautifulSoup as bs
+import re
 import cchardet
 
 
@@ -161,11 +162,26 @@ class Parser:
     def downloadFile(self, path, url):
         response = self.session.get(url)
         headers = response.headers
-        name = headers["filename"]
-        path = os.path.join(path, name)
 
-        if not os.path.exists(path):
-            open(path, "wb").write(response.content)
+        if "content-disposition" in headers.keys():
+            # then it's likely a pdf
+            contentdispo = headers["content-disposition"]
+            name = re.findall('filename=\"(.+)\"', contentdispo)[0]
+
+            path = os.path.join(path, name)
+
+            if not os.path.exists(path):
+                open(path, "wb").write(response.content)
+
+        elif "adam_fold" in url:
+            soup = bs(response.text, "lxml")
+            name = soup.find("a", {"name": "il_mhead_t_focus"}).text
+
+            path = os.path.join(path, name)
+
+            if not os.path.exists(path):
+                os.mkdir(path)
+
 
     def getFileLinks(self, url):
         soup = bs(self.session.get(url).text, "lxml")
@@ -177,8 +193,16 @@ class Parser:
 
         return links
 
+    def downloadCourse(self, courseName, courseURL):
+        links = self.getFileLinks(courseURL)
+        for link in links:
+            path = os.path.join(self.home, courseName)
+            self.downloadFile(path, link)
+
 
 
 if __name__ == "__main__":
     parser = Parser()
     parser.loadCourses()
+    parser.downloadCourse("20996-01 – Wahrscheinlichkeitstheorie","https://adam.unibas.ch/goto_adam_crs_1257264.html")
+
