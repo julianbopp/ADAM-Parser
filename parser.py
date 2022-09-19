@@ -142,7 +142,7 @@ class Parser:
 
     def saveCourses(self):
         file = json.dumps(self.courses)
-        f = open("courses.json","w")
+        f = open("courses.json", "w")
         f.write(file)
         f.close()
 
@@ -163,7 +163,6 @@ class Parser:
         name = headers["filename"]
         path = os.path.join(path, name)
         open(path, "wb").write(response.content)
-
 
 
 if __name__ == "__main__":
