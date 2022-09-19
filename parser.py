@@ -50,3 +50,11 @@ fourthPostData = {
     "shib_idp_ls_success.shib_idp_session_ss": "false",
     "_eventId_proceed": ""
 }
+
+# define url's
+URL1 = "https://adam.unibas.ch/login.php"
+URL2 = "https://adam.unibas.ch/shib_login.php?target="
+URL3 = "https://wayf.switch.ch/SWITCHaai/WAYF?entityID=https%3A%2F%2Fadam.unibas.ch%2Fshibboleth&return=https%3A%2F%2Fadam.unibas.ch%2FShibboleth.sso%2FLogin"
+URL4 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s1"
+URL5 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s2"
+URL6 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s3"
