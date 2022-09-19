@@ -90,3 +90,9 @@ for item in text.split("\n"):
         SAMLResponse = SAMLResponse.replace('<input type="hidden" name="SAMLResponse" value="', "")
         SAMLResponse = SAMLResponse.replace('"/>', "")
         break
+        
+# create Post data with opensaml_req and SAMLResponse number
+fifthPostData = {
+    "RelayState": opensaml_req,
+    "SAMLResponse": SAMLResponse
+}
