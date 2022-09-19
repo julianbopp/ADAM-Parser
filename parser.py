@@ -184,9 +184,7 @@ class Parser:
                 os.mkdir(path)
 
             # get links from inside folder
-            linksInFolder = self.getFileLinks(url)
-            for link in linksInFolder:
-                self.downloadFile(path, link)
+            self.downloadFolder(path, "", url)
 
 
 
@@ -207,8 +205,8 @@ class Parser:
     def downloadFolder(self, path, courseName, courseURL):
         links = self.getFileLinks(courseURL)
         for link in links:
-            path = os.path.join(path, courseName)
-            self.downloadFile(path, link)
+            newpath = os.path.join(path, courseName)
+            self.downloadFile(newpath, link)
 
     def downloadAllCourses(self):
         for course in self.courses:
