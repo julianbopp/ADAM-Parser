@@ -1,3 +1,4 @@
+import os
 import requests
 from bs4 import BeautifulSoup as bs
 import cchardet
@@ -138,6 +139,11 @@ class Parser:
             courses[course.text] = course["href"]
 
         self.courses = courses
+
+    def createCourseDirectories(self):
+        for item in self.courses:
+            path = os.path.join(self.home, item)
+            os.mkdir(path)
 
 
 if __name__ == "__main__":
