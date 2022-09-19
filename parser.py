@@ -165,6 +165,17 @@ class Parser:
         path = os.path.join(path, name)
         open(path, "wb").write(response.content)
 
+    def getFileLinks(self, url):
+        soup = bs(self.session.get(url).text, "lxml")
+        files = soup.find_all("a", {"class": "il_ContainerItemTitle"})
+
+        links = []
+        for item in files:
+            links.append(item["href"])
+
+        return links
+
+
 
 if __name__ == "__main__":
     parser = Parser()
