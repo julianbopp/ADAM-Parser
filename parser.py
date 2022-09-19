@@ -69,3 +69,24 @@ third = session.post(URL3, headers=headers, data=firstPostData)
 fourth = session.post(URL4, headers=headers, data=secondPostData)
 fifth = session.post(URL5, headers=headers, data=thirdPostData)
 sixth = session.post(URL6, headers=headers, data=fourthPostData)
+
+# need to read opensaml_req number from cookies
+cookies = session.cookies
+
+for cookie in cookies:
+    # if everything works this should occur once
+    if "opensaml_req" in cookie.name:
+        opensaml_req = cookie.name
+        opensaml_req = opensaml_req.strip("_opensaml_req_")
+        opensaml_req = opensaml_req.replace("%3A", ":")
+        opensaml_req = "ss" + opensaml_req
+
+# need to read SAMLResponse number from sixth.text
+text = sixth.text
+for item in text.split("\n"):
+    # if everything works this should occur once
+    if "SAMLResponse" in item:
+        SAMLResponse = item
+        SAMLResponse = SAMLResponse.replace('<input type="hidden" name="SAMLResponse" value="', "")
+        SAMLResponse = SAMLResponse.replace('"/>', "")
+        break
