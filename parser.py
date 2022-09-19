@@ -163,7 +163,9 @@ class Parser:
         headers = response.headers
         name = headers["filename"]
         path = os.path.join(path, name)
-        open(path, "wb").write(response.content)
+
+        if not os.path.exists(path):
+            open(path, "wb").write(response.content)
 
     def getFileLinks(self, url):
         soup = bs(self.session.get(url).text, "lxml")
