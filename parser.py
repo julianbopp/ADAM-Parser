@@ -1,103 +1,112 @@
 import requests
 
-username = input("insert username: ")
-password = input("insert password: ")
 
-headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
-           "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-           "Accept-Language": "en-US,en;q=0.5",
-           "Content-Type": "application/x-www-form-urlencoded",
-           "Upgrade-Insecure-Requests": "1",
-           "Sec-Fetch-Dest": "document",
-           "Sec-Fetch-Mode": "navigate",
-           "Sec-Fetch-Site": "same-origin"}
+class Parser:
+    def __init__(self):
+        print("hello")
 
-postHeaders = {
-    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.5",
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Upgrade-Insecure-Requests": "1",
-    "Sec-Fetch-Dest": "document",
-    "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "cross-site"
-}
+    def getSession(self):
+        username = input("insert username: ")
+        password = input("insert password: ")
 
-firstPostData = {
-    "user_idp": "https://aai-logon.unibas.ch/idp/shibboleth",
-    "Select": "Select"
-}
+        headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
+                   "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+                   "Accept-Language": "en-US,en;q=0.5",
+                   "Content-Type": "application/x-www-form-urlencoded",
+                   "Upgrade-Insecure-Requests": "1",
+                   "Sec-Fetch-Dest": "document",
+                   "Sec-Fetch-Mode": "navigate",
+                   "Sec-Fetch-Site": "same-origin"}
 
-secondPostData = {
-    "shib_idp_ls_exception.shib_idp_session_ss": "",
-    "shib_idp_ls_success.shib_idp_session_ss": "true",
-    "shib_idp_ls_value.shib_idp_session_ss": "",
-    "shib_idp_ls_exception.shib_idp_persistent_ss": "",
-    "shib_idp_ls_success.shib_idp_persistent_ss": "true",
-    "shib_idp_ls_value.shib_idp_persistent_ss": "",
-    "shib_idp_ls_supported": "true",
-    "_eventId_proceed": ""
-}
+        postHeaders = {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Upgrade-Insecure-Requests": "1",
+            "Sec-Fetch-Dest": "document",
+            "Sec-Fetch-Mode": "navigate",
+            "Sec-Fetch-Site": "cross-site"
+        }
 
-thirdPostData = {
-    "j_username": username,
-    "j_password": password,
-    "_eventId_proceed": ""
-}
+        firstPostData = {
+            "user_idp": "https://aai-logon.unibas.ch/idp/shibboleth",
+            "Select": "Select"
+        }
 
-fourthPostData = {
-    "shib_idp_ls_exception.shib_idp_session_ss": "",
-    "shib_idp_ls_success.shib_idp_session_ss": "false",
-    "_eventId_proceed": ""
-}
+        secondPostData = {
+            "shib_idp_ls_exception.shib_idp_session_ss": "",
+            "shib_idp_ls_success.shib_idp_session_ss": "true",
+            "shib_idp_ls_value.shib_idp_session_ss": "",
+            "shib_idp_ls_exception.shib_idp_persistent_ss": "",
+            "shib_idp_ls_success.shib_idp_persistent_ss": "true",
+            "shib_idp_ls_value.shib_idp_persistent_ss": "",
+            "shib_idp_ls_supported": "true",
+            "_eventId_proceed": ""
+        }
 
-# define url's
-URL1 = "https://adam.unibas.ch/login.php"
-URL2 = "https://adam.unibas.ch/shib_login.php?target="
-URL3 = "https://wayf.switch.ch/SWITCHaai/WAYF?entityID=https%3A%2F%2Fadam.unibas.ch%2Fshibboleth&return=https%3A%2F%2Fadam.unibas.ch%2FShibboleth.sso%2FLogin"
-URL4 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s1"
-URL5 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s2"
-URL6 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s3"
+        thirdPostData = {
+            "j_username": username,
+            "j_password": password,
+            "_eventId_proceed": ""
+        }
 
-# start session that collects and keeps cookies
-session = requests.session()
+        fourthPostData = {
+            "shib_idp_ls_exception.shib_idp_session_ss": "",
+            "shib_idp_ls_success.shib_idp_session_ss": "false",
+            "_eventId_proceed": ""
+        }
 
-# get some url's, post some data to login
-first = session.get(URL1, headers=headers)
-second = session.get(URL2, headers=headers)
-third = session.post(URL3, headers=headers, data=firstPostData)
-fourth = session.post(URL4, headers=headers, data=secondPostData)
-fifth = session.post(URL5, headers=headers, data=thirdPostData)
-sixth = session.post(URL6, headers=headers, data=fourthPostData)
+        # define url's
+        URL1 = "https://adam.unibas.ch/login.php"
+        URL2 = "https://adam.unibas.ch/shib_login.php?target="
+        URL3 = "https://wayf.switch.ch/SWITCHaai/WAYF?entityID=https%3A%2F%2Fadam.unibas.ch%2Fshibboleth&return=https%3A%2F%2Fadam.unibas.ch%2FShibboleth.sso%2FLogin"
+        URL4 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s1"
+        URL5 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s2"
+        URL6 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s3"
 
-# need to read opensaml_req number from cookies
-cookies = session.cookies
+        # start session that collects and keeps cookies
+        session = requests.session()
 
-for cookie in cookies:
-    # if everything works this should occur once
-    if "opensaml_req" in cookie.name:
-        opensaml_req = cookie.name
-        opensaml_req = opensaml_req.strip("_opensaml_req_")
-        opensaml_req = opensaml_req.replace("%3A", ":")
-        opensaml_req = "ss" + opensaml_req
+        # get some url's, post some data to login
+        first = session.get(URL1, headers=headers)
+        second = session.get(URL2, headers=headers)
+        third = session.post(URL3, headers=headers, data=firstPostData)
+        fourth = session.post(URL4, headers=headers, data=secondPostData)
+        fifth = session.post(URL5, headers=headers, data=thirdPostData)
+        sixth = session.post(URL6, headers=headers, data=fourthPostData)
 
-# need to read SAMLResponse number from sixth.text
-text = sixth.text
-for item in text.split("\n"):
-    # if everything works this should occur once
-    if "SAMLResponse" in item:
-        SAMLResponse = item
-        SAMLResponse = SAMLResponse.replace('<input type="hidden" name="SAMLResponse" value="', "")
-        SAMLResponse = SAMLResponse.replace('"/>', "")
-        break
-        
-# create Post data with opensaml_req and SAMLResponse number
-fifthPostData = {
-    "RelayState": opensaml_req,
-    "SAMLResponse": SAMLResponse
-}
+        # need to read opensaml_req number from cookies
+        cookies = session.cookies
 
-# last two steps for creating logged in session
-seventh = session.post("https://adam.unibas.ch/Shibboleth.sso/SAML2/POST", headers=postHeaders,
-                       data=fifthPostData)
-eighth = session.get("https://adam.unibas.ch/shib_login.php?target=", headers=headers)
+        for cookie in cookies:
+            # if everything works this should occur once
+            if "opensaml_req" in cookie.name:
+                opensaml_req = cookie.name
+                opensaml_req = opensaml_req.strip("_opensaml_req_")
+                opensaml_req = opensaml_req.replace("%3A", ":")
+                opensaml_req = "ss" + opensaml_req
+
+        # need to read SAMLResponse number from sixth.text
+        text = sixth.text
+        for item in text.split("\n"):
+            # if everything works this should occur once
+            if "SAMLResponse" in item:
+                SAMLResponse = item
+                SAMLResponse = SAMLResponse.replace('<input type="hidden" name="SAMLResponse" value="', "")
+                SAMLResponse = SAMLResponse.replace('"/>', "")
+                break
+
+        # create Post data with opensaml_req and SAMLResponse number
+        fifthPostData = {
+            "RelayState": opensaml_req,
+            "SAMLResponse": SAMLResponse
+        }
+
+        # last two steps for creating logged in session
+        seventh = session.post("https://adam.unibas.ch/Shibboleth.sso/SAML2/POST", headers=postHeaders,
+                               data=fifthPostData)
+        eighth = session.get("https://adam.unibas.ch/shib_login.php?target=", headers=headers)
+
+        return session
+
