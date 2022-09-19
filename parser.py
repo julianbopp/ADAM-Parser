@@ -8,6 +8,7 @@ class Parser:
         with open("userdata.txt") as userdata:
             self.username = userdata.readline().replace('\n', '')
             self.password = userdata.readline().replace('\n', '')
+            self.home = userdata.readline().replace('\n', '')
 
         self.session = self.getSession()
         self.courses = None
