@@ -127,6 +127,7 @@ class Parser:
         URL = "https://adam.unibas.ch/goto_adam_file_1243214_download.html"
         response = self.session.get(URL)
         open("test.pdf", "wb").write(response.content)
+        parser.downloadCourse("20996-01 – Wahrscheinlichkeitstheorie","https://adam.unibas.ch/goto_adam_crs_1257264.html")
 
     def getCourses(self):
         semesterURL = "https://adam.unibas.ch/ilias.php?view=0&show=48657262737473656d65737465722032303232&cmd" \
@@ -210,5 +211,4 @@ class Parser:
 if __name__ == "__main__":
     parser = Parser()
     parser.loadCourses()
-    parser.downloadCourse("20996-01 – Wahrscheinlichkeitstheorie","https://adam.unibas.ch/goto_adam_crs_1257264.html")
 
