@@ -182,6 +182,12 @@ class Parser:
             if not os.path.exists(path):
                 os.mkdir(path)
 
+            # get links from inside folder
+            linksInFolder = self.getFileLinks(url)
+            for link in linksInFolder:
+                self.downloadFile(path, link)
+
+
 
     def getFileLinks(self, url):
         soup = bs(self.session.get(url).text, "lxml")
