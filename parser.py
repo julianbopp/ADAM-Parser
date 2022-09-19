@@ -1,4 +1,5 @@
 import requests
+from bs4 import BeautifulSoup as bs
 
 
 class Parser:
@@ -8,6 +9,7 @@ class Parser:
             self.password = userdata.readline().replace('\n', '')
             print(self.username + self.password)
 
+        self.session = self.getSession()
 
     def getSession(self):
 
@@ -122,6 +124,11 @@ class Parser:
         URL = "https://adam.unibas.ch/goto_adam_file_1243214_download.html"
         response = session.get(URL)
         open("test.pdf", "wb").write(response.content)
+
+    def getCourses(self):
+        semesterURL = "https://adam.unibas.ch/ilias.php?view=0&show=48657262737473656d65737465722032303232&cmd" \
+                      "=jumpToSelectedItems&cmdClass=ildashboardgui&cmdNode=c0&baseClass=ilDashboardGUI "
+        semester = bs.get(self.session.get(semesterURL).text)
 
 
 if __name__ == "__main__":
