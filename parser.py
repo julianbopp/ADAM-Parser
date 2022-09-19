@@ -204,15 +204,15 @@ class Parser:
 
         return links
 
-    def downloadCourse(self, courseName, courseURL):
+    def downloadFolder(self, path, courseName, courseURL):
         links = self.getFileLinks(courseURL)
         for link in links:
-            path = os.path.join(self.home, courseName)
+            path = os.path.join(path, courseName)
             self.downloadFile(path, link)
 
     def downloadAllCourses(self):
         for course in self.courses:
-            self.downloadCourse(course, self.courses[course])
+            self.downloadFolder(self.home, course, self.courses[course])
 
 
 if __name__ == "__main__":
