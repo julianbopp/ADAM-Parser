@@ -158,8 +158,15 @@ class Parser:
             path = os.path.join(self.home, item)
             os.mkdir(path)
 
+    def downloadFile(self, path, url):
+        response = self.session.get(url)
+        headers = response.headers
+        name = headers["filename"]
+        path = os.path.join(path, name)
+        open(name, "wb").write(response.content)
+
+
 
 if __name__ == "__main__":
     parser = Parser()
     parser.loadCourses()
-    parser.createCourseDirectories()
