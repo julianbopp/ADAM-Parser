@@ -123,9 +123,8 @@ class Parser:
         return session
 
     def testSession(self):
-        session = self.getSession()
         URL = "https://adam.unibas.ch/goto_adam_file_1243214_download.html"
-        response = session.get(URL)
+        response = self.session.get(URL)
         open("test.pdf", "wb").write(response.content)
 
     def getCourses(self):
@@ -163,7 +162,7 @@ class Parser:
         headers = response.headers
         name = headers["filename"]
         path = os.path.join(path, name)
-        open(name, "wb").write(response.content)
+        open(path, "wb").write(response.content)
 
 
 
