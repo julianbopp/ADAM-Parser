@@ -126,7 +126,7 @@ class Parser:
     def getCourses(self):
         semesterURL = "https://adam.unibas.ch/ilias.php?view=0&show=48657262737473656d65737465722032303232&cmd" \
                       "=jumpToSelectedItems&cmdClass=ildashboardgui&cmdNode=c0&baseClass=ilDashboardGUI "
-        semester = bs.get(self.session.get(semesterURL).text)
+        semester = bs(self.session.get(semesterURL).content, "lxml")
 
 
 
