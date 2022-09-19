@@ -96,3 +96,8 @@ fifthPostData = {
     "RelayState": opensaml_req,
     "SAMLResponse": SAMLResponse
 }
+
+# last two steps for creating logged in session
+seventh = session.post("https://adam.unibas.ch/Shibboleth.sso/SAML2/POST", headers=postHeaders,
+                       data=fifthPostData)
+eighth = session.get("https://adam.unibas.ch/shib_login.php?target=", headers=headers)
