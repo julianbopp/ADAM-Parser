@@ -155,7 +155,8 @@ class Parser:
     def createCourseDirectories(self):
         for item in self.courses:
             path = os.path.join(self.home, item)
-            os.mkdir(path)
+            if not os.path.exists(path):
+                os.mkdir(path)
 
     def downloadFile(self, path, url):
         response = self.session.get(url)
