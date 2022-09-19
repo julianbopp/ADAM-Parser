@@ -110,3 +110,13 @@ class Parser:
 
         return session
 
+    def testSession(self):
+        session = self.getSession()
+        URL = "https://adam.unibas.ch/goto_adam_file_1243214_download.html"
+        response = session.get(URL)
+        open("test.pdf", "wb").write(response.content)
+
+
+if __name__ == "__main__":
+    parser = Parser()
+    parser.testSession()
