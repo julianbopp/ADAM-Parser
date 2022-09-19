@@ -10,6 +10,7 @@ class Parser:
             self.password = userdata.readline().replace('\n', '')
 
         self.session = self.getSession()
+        self.courses = None
 
     def getSession(self):
 
@@ -126,8 +127,16 @@ class Parser:
 
     def getCourses(self):
         semesterURL = "https://adam.unibas.ch/ilias.php?view=0&show=48657262737473656d65737465722032303232&cmd" \
-                      "=jumpToSelectedItems&cmdClass=ildashboardgui&cmdNode=c0&baseClass=ilDashboardGUI "
-        semester = bs(self.session.get(semesterURL).content, "lxml")
+                      "=jumpToSelectedItems&cmdClass=ildashboardgui&cmdNode=c0&baseClass=ilDashboardGUI"
+        semester = bs(self.session.get(semesterURL).text, "lxml")
+
+        # save dictionary of name : url pairs
+        courses = {}
+        for item in semester.find_all("div", {"class": "il-item-title"}):
+            course = item.find("a")
+            courses[course.text] = course["href"]
+
+        self.courses = courses
 
 
 
