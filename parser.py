@@ -147,6 +147,12 @@ class Parser:
         f.write(file)
         f.close()
 
+    def loadCourses(self):
+        file = open("courses.json")
+        self.courses = json.load(file)
+
+        print(self.courses)
+
 
     def createCourseDirectories(self):
         for item in self.courses:
@@ -156,4 +162,4 @@ class Parser:
 
 if __name__ == "__main__":
     parser = Parser()
-    parser.saveCourses()
+    parser.loadCourses()
