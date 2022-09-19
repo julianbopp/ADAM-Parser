@@ -196,7 +196,11 @@ class Parser:
 
         links = []
         for item in files:
-            links.append(item["href"])
+            print(item)
+            if "https://adam.unibas.ch/" not in item["href"]:
+                links.append("https://adam.unibas.ch/" + item["href"])
+            else:
+                links.append(item["href"])
 
         return links
 
@@ -206,9 +210,14 @@ class Parser:
             path = os.path.join(self.home, courseName)
             self.downloadFile(path, link)
 
+    def downloadAllCourses(self):
+        for course in self.courses:
+            self.downloadCourse(course, self.courses[course])
 
 
 if __name__ == "__main__":
     parser = Parser()
     parser.loadCourses()
+    parser.createCourseDirectories()
+    parser.downloadAllCourses()
 
