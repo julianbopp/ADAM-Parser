@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 from bs4 import BeautifulSoup as bs
@@ -140,6 +141,13 @@ class Parser:
 
         self.courses = courses
 
+    def saveCourses(self):
+        file = json.dumps(self.courses)
+        f = open("courses.json","w")
+        f.write(file)
+        f.close()
+
+
     def createCourseDirectories(self):
         for item in self.courses:
             path = os.path.join(self.home, item)
@@ -148,5 +156,4 @@ class Parser:
 
 if __name__ == "__main__":
     parser = Parser()
-    parser.testSession()
-    parser.getCourses()
+    parser.saveCourses()
