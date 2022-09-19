@@ -3,11 +3,17 @@ import requests
 
 class Parser:
     def __init__(self):
-        print("hello")
+        with open("userdata.txt") as userdata:
+            self.username = userdata.readline().replace('\n', '')
+            self.password = userdata.readline().replace('\n', '')
+            print(self.username + self.password)
+
 
     def getSession(self):
-        username = input("insert username: ")
-        password = input("insert password: ")
+
+        if self.username is None or self.password is None:
+            self.username = input("insert username: ")
+            self.password = input("insert password: ")
 
         headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -46,8 +52,8 @@ class Parser:
         }
 
         thirdPostData = {
-            "j_username": username,
-            "j_password": password,
+            "j_username": self.username,
+            "j_password": self.password,
             "_eventId_proceed": ""
         }
 
@@ -89,6 +95,7 @@ class Parser:
 
         # need to read SAMLResponse number from sixth.text
         text = sixth.text
+        print(sixth.text)
         for item in text.split("\n"):
             # if everything works this should occur once
             if "SAMLResponse" in item:
