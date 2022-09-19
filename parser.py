@@ -61,3 +61,11 @@ URL6 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e
 
 # start session that collects and keeps cookies
 session = requests.session()
+
+# get some url's, post some data to login
+first = session.get(URL1, headers=headers)
+second = session.get(URL2, headers=headers)
+third = session.post(URL3, headers=headers, data=firstPostData)
+fourth = session.post(URL4, headers=headers, data=secondPostData)
+fifth = session.post(URL5, headers=headers, data=thirdPostData)
+sixth = session.post(URL6, headers=headers, data=fourthPostData)
