@@ -139,7 +139,6 @@ class Parser:
         self.courses = courses
 
 
-
 if __name__ == "__main__":
     parser = Parser()
     parser.testSession()
