@@ -195,9 +195,13 @@ class Parser:
             if not os.path.exists(path):
                 os.mkdir(path)
 
+            self.downloadExerciseFolder(path, "", url)
+
+
+
     def getExerciseLinks(self, url):
         soup = bs(self.session.get(url).text, "lxml")
-        files = soup.find_all("a", {"text": "Download"})
+        files = soup.find_all("a", text="Download")
 
         links = []
         for item in files:
@@ -205,6 +209,14 @@ class Parser:
                 links.append("https://adam.unibas.ch/" + item["href"])
             else:
                 links.append(item["href"])
+
+        return links
+
+    def downloadExerciseFolder(self, path, folderName, folderURL):
+        links = self.getExerciseLinks(folderURL)
+        for link in links:
+            newpath = os.path.join(path, folderName)
+            self.downloadFile(newpath, link)
 
     def getFileLinks(self, url):
         soup = bs(self.session.get(url).text, "lxml")
