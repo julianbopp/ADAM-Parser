@@ -186,7 +186,25 @@ class Parser:
             # get links from inside folder
             self.downloadFolder(path, "", url)
 
+        elif "adam_exc" in url:
+            soup = bs(response.text, "lxml")
+            name = soup.find("a", {"name": "il_mhead_t_focus"}).text
 
+            path = os.path.join(path, name)
+
+            if not os.path.exists(path):
+                os.mkdir(path)
+
+    def getExerciseLinks(self, url):
+        soup = bs(self.session.get(url).text, "lxml")
+        files = soup.find_all("a", {"text": "Download"})
+
+        links = []
+        for item in files:
+            if "https://adam.unibas.ch/" not in item["href"]:
+                links.append("https://adam.unibas.ch/" + item["href"])
+            else:
+                links.append(item["href"])
 
     def getFileLinks(self, url):
         soup = bs(self.session.get(url).text, "lxml")
@@ -217,5 +235,5 @@ if __name__ == "__main__":
     parser = Parser()
     parser.loadCourses()
     parser.createCourseDirectories()
-    parser.downloadAllCourses()
+    parser.downloadFolder(parser.home,  "13548-01 – Foundations of Artificial Intelligence", "https://adam.unibas.ch/goto_adam_crs_1250493.html")
 
