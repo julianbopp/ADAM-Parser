@@ -147,7 +147,10 @@ class Parser:
         courses = {}
         for item in semester.find_all("div", {"class": "il-item-title"}):
             course = item.find("a")
-            courses[course.text] = course["href"]
+
+            # check if it's really a course url and not something else before adding
+            if "crs" in course["href"]:
+                courses[course.text] = course["href"]
 
         self.courses = courses
 
