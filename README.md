@@ -21,6 +21,6 @@ notmyrealpasswordofcourse
 - Some courses use external pages, different from ADAM, to upload their lecture slides or exercise sheets. I'd like to use this script to download these files aswell
 - Some exercise sheets come with additional resources. Currently all resources and exercise sheets will be downloaded to one folder. I'd like the script to create a folder for each exercise that separates the exercise resources from eachother like so:
 	- sheet01 -> sheet01.pdf, sheet01resources.zip
-	- sheet02 -> sheet01.pdf, sheet01resources.zip
+	- sheet02 -> sheet01.pdf, sheet02resources.zip
 	- ...
 
