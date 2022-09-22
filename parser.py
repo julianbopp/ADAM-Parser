@@ -15,6 +15,7 @@ class Parser:
 
         self.session = self.getSession()
         self.courses = None
+        self.semesterURL = self.getSemesterURL()
 
     def getSession(self):
 
@@ -129,9 +130,17 @@ class Parser:
         open("test.pdf", "wb").write(response.content)
         parser.downloadCourse("20996-01 – Wahrscheinlichkeitstheorie","https://adam.unibas.ch/goto_adam_crs_1257264.html")
 
+    def getSemesterURL(self):
+        soup = bs(self.session.get("https://adam.unibas.ch/ilias.php?baseClass=ilDashboardGUI&cmd=jumpToSelectedItems").text, "lxml")
+        semester = soup.find("button", {"aria-label": "Herbstsemester 2022"})
+        semesterURL = "https://adam.unibas.ch/" + semester["data-action"]
+
+        return semesterURL
+
+
     def getCourses(self):
-        semesterURL = "https://adam.unibas.ch/ilias.php?view=0&show=48657262737473656d65737465722032303232&cmd" \
-                      "=jumpToSelectedItems&cmdClass=ildashboardgui&cmdNode=c0&baseClass=ilDashboardGUI"
+        semesterURL = self.semesterURL
+
         semester = bs(self.session.get(semesterURL).text, "lxml")
 
         # save dictionary of name : url pairs
