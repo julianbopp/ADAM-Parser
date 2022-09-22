@@ -245,7 +245,9 @@ class Parser:
 
 if __name__ == "__main__":
     parser = Parser()
+    parser.getCourses()
+    parser.saveCourses()
     parser.loadCourses()
     parser.createCourseDirectories()
-    parser.downloadFolder(parser.home,  "13548-01 – Foundations of Artificial Intelligence", "https://adam.unibas.ch/goto_adam_crs_1250493.html")
+    parser.downloadAllCourses()
 
