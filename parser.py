@@ -153,11 +153,8 @@ class Parser:
             # check if it's really a course url and not something else before adding
             if "crs" in course["href"]:
 
-                # remove the course number spaces and dashes in front of the course name (first 11 characters)
-                courseName = course.text[11:]
-
                 # add course with link to dict.
-                courses[courseName] = course["href"]
+                courses[course.text] = course["href"]
 
         self.courses = courses
 
