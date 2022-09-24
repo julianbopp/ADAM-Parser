@@ -141,10 +141,9 @@ class Parser:
 
         return semesterURL
 
+    # Find all courses of the current Semester and save their name + link in dictionary
     def getCourses(self):
-        semesterURL = self.semesterURL
-
-        semester = bs(self.session.get(semesterURL).text, "lxml")
+        semester = bs(self.session.get(self.semesterURL).text, "lxml")
 
         # save dictionary of name : url pairs
         courses = {}
