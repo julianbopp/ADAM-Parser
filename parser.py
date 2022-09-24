@@ -163,11 +163,10 @@ class Parser:
         f.write(file)
         f.close()
 
+    # Load courses from courses.json
     def loadCourses(self):
         file = open("courses.json")
         self.courses = json.load(file)
-
-        print(self.courses)
 
     def createCourseDirectories(self):
         for item in self.courses:
