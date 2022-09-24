@@ -6,6 +6,12 @@ import re
 import cchardet
 
 
+class Course:
+    def __init__(self, name, url):
+        self.name = name
+        self.url = url
+
+
 class Parser:
     def __init__(self):
         with open("userdata.txt") as userdata:
@@ -15,6 +21,7 @@ class Parser:
 
         self.session = self.getSession()
         self.courses = None
+        self.coursesDict = None
         self.currentSemester = "Herbstsemester 2022"
         self.semesterURL = self.getSemesterURL()
 
@@ -153,27 +160,35 @@ class Parser:
             # check if it's really a course url and not something else before adding
             if "crs" in course["href"]:
 
+
                 # add course with link to dict.
                 courses[course.text] = course["href"]
 
-        self.courses = courses
+        self.coursesDict = courses
 
     # Save the courses dictionary to a json file
-    def saveCourses(self):
-        file = json.dumps(self.courses)
+    def saveCoursesDict(self):
+        file = json.dumps(self.coursesDict)
         f = open("courses.json", "w")
         f.write(file)
         f.close()
 
     # Load courses from courses.json
-    def loadCourses(self):
+    def loadCoursesDict(self):
         file = open("courses.json")
-        self.courses = json.load(file)
+        self.coursesDict = json.load(file)
+
+    def courseDictToArray(self):
+        courses = []
+        for course in self.coursesDict:
+            courseName = course[11:]
+            courses.append(Course(courseName, self.coursesDict[course]))
+        self.courses = courses
 
     # Create the course folder structure in your filesystem
     def createCourseDirectories(self):
         for item in self.courses:
-            path = os.path.join(self.home, item)
+            path = os.path.join(self.home, item.name)
             if not os.path.exists(path):
                 os.mkdir(path)
 
@@ -270,14 +285,15 @@ class Parser:
     # Download each course from current semester
     def downloadAllCourses(self):
         for course in self.courses:
-            self.downloadFolder(self.home, course, self.courses[course])
+            self.downloadFolder(self.home, course.name, course.url)
 
 
 
 if __name__ == "__main__":
     parser = Parser()
     parser.getCourses()
-    parser.saveCourses()
-    parser.loadCourses()
+    parser.saveCoursesDict()
+    parser.loadCoursesDict()
+    parser.courseDictToArray()
     parser.createCourseDirectories()
     parser.downloadAllCourses()
