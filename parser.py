@@ -156,6 +156,7 @@ class Parser:
 
         self.courses = courses
 
+    # Save the courses dictionary to a json file
     def saveCourses(self):
         file = json.dumps(self.courses)
         f = open("courses.json", "w")
