@@ -168,6 +168,7 @@ class Parser:
         file = open("courses.json")
         self.courses = json.load(file)
 
+    # Create the course folder structure in your filesystem
     def createCourseDirectories(self):
         for item in self.courses:
             path = os.path.join(self.home, item)
