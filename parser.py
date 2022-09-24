@@ -222,6 +222,7 @@ class Parser:
             # download exercise folder content
             self.downloadExerciseFolder(path, "", url)
 
+    # Inside an Exercise(special adam folder) find all links
     def getExerciseLinks(self, url):
         soup = bs(self.session.get(url).text, "lxml")
         files = soup.find_all("a", text="Download")
@@ -235,12 +236,14 @@ class Parser:
 
         return links
 
+    # Download content of Exercise(special adam folder) folder
     def downloadExerciseFolder(self, path, folderName, folderURL):
         links = self.getExerciseLinks(folderURL)
         for link in links:
             newpath = os.path.join(path, folderName)
             self.downloadFile(newpath, link)
 
+    # Get download links from insider folder
     def getFileLinks(self, url):
         soup = bs(self.session.get(url).text, "lxml")
         files = soup.find_all("a", {"class": "il_ContainerItemTitle"})
@@ -255,12 +258,14 @@ class Parser:
 
         return links
 
+    # Download complete folder
     def downloadFolder(self, path, courseName, courseURL):
         links = self.getFileLinks(courseURL)
         for link in links:
             newpath = os.path.join(path, courseName)
             self.downloadFile(newpath, link)
 
+    # Download each course from current semester
     def downloadAllCourses(self):
         for course in self.courses:
             self.downloadFolder(self.home, course, self.courses[course])
