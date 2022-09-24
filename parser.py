@@ -175,6 +175,7 @@ class Parser:
             if not os.path.exists(path):
                 os.mkdir(path)
 
+    # Download from a link. Can be content, folder, and exercise folder
     def downloadFile(self, path, url):
         response = self.session.get(url)
         headers = response.headers
@@ -182,14 +183,21 @@ class Parser:
         if "content-disposition" in headers.keys():
             # then it's likely a pdf
             contentdispo = headers["content-disposition"]
+
+            # extract filename and format it
             name = re.findall('filename=\"(.+)\"', contentdispo)[0]
 
+            # create path where the file will be stored
             path = os.path.join(path, name)
 
+            # only write to filesystem if it does not already exist
             if not os.path.exists(path):
                 open(path, "wb").write(response.content)
 
         elif "adam_fold" in url:
+            # it's a folder
+            # we have to extract all links, names from the folder
+            # use beautiful soup object to parse for the folder name
             soup = bs(response.text, "lxml")
             name = soup.find("a", {"name": "il_mhead_t_focus"}).text
 
@@ -198,10 +206,11 @@ class Parser:
             if not os.path.exists(path):
                 os.mkdir(path)
 
-            # get links from inside folder
+            # download folder content
             self.downloadFolder(path, "", url)
 
         elif "adam_exc" in url:
+            # it's an exercise folder
             soup = bs(response.text, "lxml")
             name = soup.find("a", {"name": "il_mhead_t_focus"}).text
 
@@ -210,6 +219,7 @@ class Parser:
             if not os.path.exists(path):
                 os.mkdir(path)
 
+            # download exercise folder content
             self.downloadExerciseFolder(path, "", url)
 
     def getExerciseLinks(self, url):
