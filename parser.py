@@ -15,8 +15,8 @@ class Parser:
 
         self.session = self.getSession()
         self.courses = None
-        self.semesterURL = self.getSemesterURL()
         self.currentSemester = "Herbstsemester 2022"
+        self.semesterURL = self.getSemesterURL()
 
     def getSession(self):
 
@@ -269,6 +269,7 @@ class Parser:
     def downloadAllCourses(self):
         for course in self.courses:
             self.downloadFolder(self.home, course, self.courses[course])
+
 
 
 if __name__ == "__main__":
