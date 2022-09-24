@@ -16,6 +16,7 @@ class Parser:
         self.session = self.getSession()
         self.courses = None
         self.semesterURL = self.getSemesterURL()
+        self.currentSemester = "Herbstsemester 2022"
 
     def getSession(self):
 
@@ -128,15 +129,17 @@ class Parser:
         URL = "https://adam.unibas.ch/goto_adam_file_1243214_download.html"
         response = self.session.get(URL)
         open("test.pdf", "wb").write(response.content)
-        parser.downloadCourse("20996-01 – Wahrscheinlichkeitstheorie","https://adam.unibas.ch/goto_adam_crs_1257264.html")
+        parser.downloadCourse("20996-01 – Wahrscheinlichkeitstheorie",
+                              "https://adam.unibas.ch/goto_adam_crs_1257264.html")
 
     def getSemesterURL(self):
-        soup = bs(self.session.get("https://adam.unibas.ch/ilias.php?baseClass=ilDashboardGUI&cmd=jumpToSelectedItems").text, "lxml")
-        semester = soup.find("button", {"aria-label": "Herbstsemester 2022"})
+        soup = bs(
+            self.session.get("https://adam.unibas.ch/ilias.php?baseClass=ilDashboardGUI&cmd=jumpToSelectedItems").text,
+            "lxml")
+        semester = soup.find("button", {"aria-label": self.currentSemester})
         semesterURL = "https://adam.unibas.ch/" + semester["data-action"]
 
         return semesterURL
-
 
     def getCourses(self):
         semesterURL = self.semesterURL
@@ -209,8 +212,6 @@ class Parser:
 
             self.downloadExerciseFolder(path, "", url)
 
-
-
     def getExerciseLinks(self, url):
         soup = bs(self.session.get(url).text, "lxml")
         files = soup.find_all("a", text="Download")
@@ -262,4 +263,3 @@ if __name__ == "__main__":
     parser.loadCourses()
     parser.createCourseDirectories()
     parser.downloadAllCourses()
-
