@@ -7,10 +7,9 @@ import cchardet
 
 
 class Course:
-    def __init__(self, name, url, external=None):
+    def __init__(self, name, url):
         self.name = name
         self.url = url
-        self.external = external
 
 
 class Parser:
@@ -137,7 +136,7 @@ class Parser:
         URL = "https://adam.unibas.ch/goto_adam_file_1243214_download.html"
         response = self.session.get(URL)
         open("test.pdf", "wb").write(response.content)
-        parser.downloadCourse("20996-01 – Wahrscheinlichkeitstheorie",
+        parser.downloadFolder(self.home,"20996-01 – Wahrscheinlichkeitstheorie",
                               "https://adam.unibas.ch/goto_adam_crs_1257264.html")
 
     def getSemesterURL(self):
@@ -152,18 +151,19 @@ class Parser:
     # Find all courses of the current Semester and save their name + link in dictionary
     def getCourses(self):
         semester = bs(self.session.get(self.semesterURL).text, "lxml")
+        print(self.semesterURL)
 
         # save dictionary of name : url pairs
         courses = {}
         for item in semester.find_all("div", {"class": "il-item-title"}):
             course = item.find("a")
-
+            print(course.text)
             # check if it's really a course url and not something else before adding
-            if "crs" in course["href"]:
+            if course["href"] is not None:
+                if "crs" in course["href"]:
 
-
-                # add course with link to dict.
-                courses[course.text] = course["href"]
+                    # add course with link to dict.
+                    courses[course.text] = course["href"]
 
         self.coursesDict = courses
 
