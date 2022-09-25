@@ -7,9 +7,10 @@ import cchardet
 
 
 class Course:
-    def __init__(self, name, url):
+    def __init__(self, name, url, external=None):
         self.name = name
         self.url = url
+        self.external = external
 
 
 class Parser:
@@ -286,6 +287,11 @@ class Parser:
     def downloadAllCourses(self):
         for course in self.courses:
             self.downloadFolder(self.home, course.name, course.url)
+
+    def getExternalSource(self, course):
+        externalURL = course.external
+        soup = bs(self.session.get(externalURL).text, "lxml")
+        h2s = soup.find_all("h2", {"class":"unibas-h2"})
 
 
 
