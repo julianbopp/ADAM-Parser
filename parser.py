@@ -157,13 +157,14 @@ class Parser:
         courses = {}
         for item in semester.find_all("div", {"class": "il-item-title"}):
             course = item.find("a")
-            print(course.text)
-            # check if it's really a course url and not something else before adding
-            if course["href"] is not None:
-                if "crs" in course["href"]:
 
-                    # add course with link to dict.
-                    courses[course.text] = course["href"]
+            # check if it's really a course url and not something else before adding
+            if course is not None:
+                if course["href"] is not None:
+                    if "crs" in course["href"]:
+
+                        # add course with link to dict.
+                        courses[course.text] = course["href"]
 
         self.coursesDict = courses
 
