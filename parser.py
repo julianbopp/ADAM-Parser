@@ -3,7 +3,6 @@ import os
 import requests
 from bs4 import BeautifulSoup as bs
 import re
-import cchardet
 
 
 class Course:
