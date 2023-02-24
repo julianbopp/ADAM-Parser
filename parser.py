@@ -21,7 +21,7 @@ class Parser:
         self.session = self.getSession()
         self.courses = None
         self.coursesDict = None
-        self.currentSemester = "Herbstsemester 2022"
+        self.currentSemester = "Frühjahrsemester 2023"
         self.semesterURL = self.getSemesterURL()
 
     def getSession(self):
