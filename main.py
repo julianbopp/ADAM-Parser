@@ -14,9 +14,9 @@ class Course:
 class Parser:
     def __init__(self):
         with open("userdata.txt") as userdata:
-            self.username = userdata.readline().replace('\n', '')
-            self.password = userdata.readline().replace('\n', '')
-            self.home = userdata.readline().replace('\n', '')
+            self.username = userdata.readline().replace("\n", "")
+            self.password = userdata.readline().replace("\n", "")
+            self.home = userdata.readline().replace("\n", "")
 
         self.session = self.getSession()
         self.courses = None
@@ -30,14 +30,16 @@ class Parser:
             self.username = input("insert username: ")
             self.password = input("insert password: ")
 
-        headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
-                   "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-                   "Accept-Language": "en-US,en;q=0.5",
-                   "Content-Type": "application/x-www-form-urlencoded",
-                   "Upgrade-Insecure-Requests": "1",
-                   "Sec-Fetch-Dest": "document",
-                   "Sec-Fetch-Mode": "navigate",
-                   "Sec-Fetch-Site": "same-origin"}
+        headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.5",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Upgrade-Insecure-Requests": "1",
+            "Sec-Fetch-Dest": "document",
+            "Sec-Fetch-Mode": "navigate",
+            "Sec-Fetch-Site": "same-origin",
+        }
 
         postHeaders = {
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
@@ -47,12 +49,12 @@ class Parser:
             "Upgrade-Insecure-Requests": "1",
             "Sec-Fetch-Dest": "document",
             "Sec-Fetch-Mode": "navigate",
-            "Sec-Fetch-Site": "cross-site"
+            "Sec-Fetch-Site": "cross-site",
         }
 
         firstPostData = {
             "user_idp": "https://aai-logon.unibas.ch/idp/shibboleth",
-            "Select": "Select"
+            "Select": "Select",
         }
 
         secondPostData = {
@@ -63,19 +65,19 @@ class Parser:
             "shib_idp_ls_success.shib_idp_persistent_ss": "true",
             "shib_idp_ls_value.shib_idp_persistent_ss": "",
             "shib_idp_ls_supported": "true",
-            "_eventId_proceed": ""
+            "_eventId_proceed": "",
         }
 
         thirdPostData = {
             "j_username": self.username,
             "j_password": self.password,
-            "_eventId_proceed": ""
+            "_eventId_proceed": "",
         }
 
         fourthPostData = {
             "shib_idp_ls_exception.shib_idp_session_ss": "",
             "shib_idp_ls_success.shib_idp_session_ss": "false",
-            "_eventId_proceed": ""
+            "_eventId_proceed": "",
         }
 
         # define url's
@@ -114,20 +116,24 @@ class Parser:
             # if everything works this should occur once
             if "SAMLResponse" in item:
                 SAMLResponse = item
-                SAMLResponse = SAMLResponse.replace('<input type="hidden" name="SAMLResponse" value="', "")
+                SAMLResponse = SAMLResponse.replace(
+                    '<input type="hidden" name="SAMLResponse" value="', ""
+                )
                 SAMLResponse = SAMLResponse.replace('"/>', "")
                 break
 
         # create Post data with opensaml_req and SAMLResponse number
-        fifthPostData = {
-            "RelayState": opensaml_req,
-            "SAMLResponse": SAMLResponse
-        }
+        fifthPostData = {"RelayState": opensaml_req, "SAMLResponse": SAMLResponse}
 
         # last two steps for creating logged in session
-        seventh = session.post("https://adam.unibas.ch/Shibboleth.sso/SAML2/POST", headers=postHeaders,
-                               data=fifthPostData)
-        eighth = session.get("https://adam.unibas.ch/shib_login.php?target=", headers=headers)
+        seventh = session.post(
+            "https://adam.unibas.ch/Shibboleth.sso/SAML2/POST",
+            headers=postHeaders,
+            data=fifthPostData,
+        )
+        eighth = session.get(
+            "https://adam.unibas.ch/shib_login.php?target=", headers=headers
+        )
 
         return session
 
@@ -135,13 +141,19 @@ class Parser:
         URL = "https://adam.unibas.ch/goto_adam_file_1243214_download.html"
         response = self.session.get(URL)
         open("test.pdf", "wb").write(response.content)
-        parser.downloadFolder(self.home,"20996-01 – Wahrscheinlichkeitstheorie",
-                              "https://adam.unibas.ch/goto_adam_crs_1257264.html")
+        parser.downloadFolder(
+            self.home,
+            "20996-01 – Wahrscheinlichkeitstheorie",
+            "https://adam.unibas.ch/goto_adam_crs_1257264.html",
+        )
 
     def getSemesterURL(self):
         soup = bs(
-            self.session.get("https://adam.unibas.ch/ilias.php?baseClass=ilDashboardGUI&cmd=jumpToSelectedItems").text,
-            "lxml")
+            self.session.get(
+                "https://adam.unibas.ch/ilias.php?baseClass=ilDashboardGUI&cmd=jumpToSelectedItems"
+            ).text,
+            "lxml",
+        )
         semester = soup.find("button", {"aria-label": self.currentSemester})
         semesterURL = "https://adam.unibas.ch/" + semester["data-action"]
 
@@ -203,7 +215,7 @@ class Parser:
             contentdispo = headers["content-disposition"]
 
             # extract filename and format it
-            name = re.findall('filename=\"(.+)\"', contentdispo)[0]
+            name = re.findall('filename="(.+)"', contentdispo)[0]
 
             # create path where the file will be stored
             path = os.path.join(path, name)
@@ -291,8 +303,7 @@ class Parser:
     def getExternalSource(self, course):
         externalURL = course.external
         soup = bs(self.session.get(externalURL).text, "lxml")
-        h2s = soup.find_all("h2", {"class":"unibas-h2"})
-
+        h2s = soup.find_all("h2", {"class": "unibas-h2"})
 
 
 if __name__ == "__main__":
