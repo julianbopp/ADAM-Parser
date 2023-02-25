@@ -25,7 +25,6 @@ class Parser:
         self.semesterURL = self.getSemesterURL()
 
     def getSession(self):
-
         if self.username is None or self.password is None:
             self.username = input("insert username: ")
             self.password = input("insert password: ")
