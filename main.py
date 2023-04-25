@@ -230,6 +230,10 @@ class Parser:
             soup = bs(response.text, "lxml")
             name = soup.find("a", {"name": "il_mhead_t_focus"}).text
 
+            # Check for "/" in folder name and replace with something else.
+            # "/" is not allowed in folder names on Linux/macOS but is allowed on ADAM
+            if "/" in name:
+                name = name.replace("/", " ")
             path = os.path.join(path, name)
 
             if not os.path.exists(path):
