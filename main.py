@@ -21,7 +21,7 @@ class Parser:
         self.session = self.getSession()
         self.courses = None
         self.coursesDict = None
-        self.currentSemester = "Frühjahrsemester 2023"
+        self.currentSemester = "Herbstsemester 2023"
         self.semesterURL = self.getSemesterURL()
 
     def getSession(self):
@@ -30,7 +30,7 @@ class Parser:
             self.password = input("insert password: ")
 
         headers = {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/117.0",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.5",
             "Content-Type": "application/x-www-form-urlencoded",
@@ -41,17 +41,34 @@ class Parser:
         }
 
         postHeaders = {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:104.0) Gecko/20100101 Firefox/104.0",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/117.0",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Upgrade-Insecure-Requests": "1",
+            "Sec-Fetch-Dest": "document",
+            "Sec-Fetch-Mode": "navigate",
+            "Sec-Fetch-Site": "same-site",
+        }
+
+        e1s2Headers = {
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/117.0",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.5",
             "Content-Type": "application/x-www-form-urlencoded",
             "Upgrade-Insecure-Requests": "1",
             "Sec-Fetch-Dest": "document",
             "Sec-Fetch-Mode": "navigate",
-            "Sec-Fetch-Site": "cross-site",
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-Fetch-User": "?1",
+            "Sec-GPC": "1",
+            "Accept-Encoding" : "gzip, deflate, br",
+            "Origin" : "https://unibas.login.eduid.ch",
+            "DNT" : "1",
+            "Referer" : "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s2",
+            "TE" : "trailers",
         }
 
-        firstPostData = {
+        POSTwayf = {
             "user_idp": "https://aai-logon.unibas.ch/idp/shibboleth",
             "Select": "Select",
         }
@@ -67,36 +84,42 @@ class Parser:
             "_eventId_proceed": "",
         }
 
-        thirdPostData = {
+        emailPostData = {
+            "j_username": "julian.bopp@unibas.ch",
+            "_eventId_submit": "",
+        } 
+        userdataPostData = {
             "j_username": self.username,
             "j_password": self.password,
             "_eventId_proceed": "",
         }
 
-        fourthPostData = {
+        finalPostData = {
             "shib_idp_ls_exception.shib_idp_session_ss": "",
             "shib_idp_ls_success.shib_idp_session_ss": "false",
             "_eventId_proceed": "",
         }
 
         # define url's
-        URL1 = "https://adam.unibas.ch/login.php"
-        URL2 = "https://adam.unibas.ch/shib_login.php?target="
-        URL3 = "https://wayf.switch.ch/SWITCHaai/WAYF?entityID=https%3A%2F%2Fadam.unibas.ch%2Fshibboleth&return=https%3A%2F%2Fadam.unibas.ch%2FShibboleth.sso%2FLogin"
-        URL4 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s1"
-        URL5 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s2"
-        URL6 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s3"
+        URLadam = "https://adam.unibas.ch"
+        URLlogin = "https://adam.unibas.ch/login.php"
+        URLhelp_screen = "https://adam.unibas.ch/ilias.php?help_screen_id=init//login.&cmdClass=ilhelpgui&cmdNode=gg&baseClass=ilhelpgui&cmdMode=asynch&cmd=showHelp"
+        URLshib_login = "https://adam.unibas.ch/shib_login.php?target="
+        URLe1s1 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s1"
+        URLe1s2 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s2"
+        URLe1s3 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s3"
+        URLe1s4 = "https://unibas.login.eduid.ch/idp/profile/SAML2/Redirect/SSO?execution=e1s4"
 
         # start session that collects and keeps cookies
         session = requests.session()
 
         # get some url's, post some data to login
-        first = session.get(URL1, headers=headers)
-        second = session.get(URL2, headers=headers)
-        third = session.post(URL3, headers=headers, data=firstPostData)
-        fourth = session.post(URL4, headers=headers, data=secondPostData)
-        fifth = session.post(URL5, headers=headers, data=thirdPostData)
-        sixth = session.post(URL6, headers=headers, data=fourthPostData)
+        shib_login = session.get(URLshib_login)
+        wayf = session.post(shib_login.url, data=POSTwayf)
+        e1s1 = session.post(URLe1s1, data=secondPostData)
+        session.post(URLe1s2, headers=e1s2Headers, data=emailPostData)
+        session.post(URLe1s3, data=userdataPostData)
+        sixth = session.post(URLe1s4, data=finalPostData)
 
         # need to read opensaml_req number from cookies
         cookies = session.cookies
@@ -108,7 +131,7 @@ class Parser:
                 opensaml_req = opensaml_req.strip("_opensaml_req_")
                 opensaml_req = opensaml_req.replace("%3A", ":")
                 opensaml_req = "ss" + opensaml_req
-
+    
         # need to read SAMLResponse number from sixth.text
         text = sixth.text
         for item in text.split("\n"):
