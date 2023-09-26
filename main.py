@@ -85,7 +85,7 @@ class Parser:
         }
 
         emailPostData = {
-            "j_username": "julian.bopp@unibas.ch",
+            "j_username": self.username,
             "_eventId_submit": "",
         } 
         userdataPostData = {
