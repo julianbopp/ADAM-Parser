@@ -15,6 +15,7 @@ My userdata.txt would look like this:
 julian.bopp@unibas.ch
 notmyrealpasswordofcourse
 /home/julian/UNIBAS/9 HS 2022/
+Herbstsemester 2022
 ```
 
 ## What I still need/want to add:
