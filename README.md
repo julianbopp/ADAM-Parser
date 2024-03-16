@@ -8,6 +8,7 @@ userdata.txt
 youremail@unibas.ch
 adampassword
 /path/to/course/directory
+Semester Year
 ```
 
 My userdata.txt would look like this:
