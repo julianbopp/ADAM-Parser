@@ -17,11 +17,11 @@ class Parser:
             self.username = userdata.readline().replace("\n", "")
             self.password = userdata.readline().replace("\n", "")
             self.home = userdata.readline().replace("\n", "")
+            self.currentSemester = userdata.readline().replace("\n", "")
 
         self.session = self.getSession()
         self.courses = None
         self.coursesDict = None
-        self.currentSemester = "Herbstsemester 2023"
         self.semesterURL = self.getSemesterURL()
 
     def getSession(self):
